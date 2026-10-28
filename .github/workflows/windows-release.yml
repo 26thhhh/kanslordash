@@ -49,9 +49,23 @@ jobs:
     - name: Smoke test executable
       shell: pwsh
       run: |
-        # Test version/help if available, or just check it starts
-        $proc = Start-Process -FilePath "dist/KANSLORDASH/KANSLORDASH.exe" -ArgumentList "--version" -NoNewWindow -Wait -PassThru
+        $exe = "dist/KANSLORDASH/KANSLORDASH.exe"
+        if (-not (Test-Path $exe)) {
+          Write-Error "KANSLORDASH.exe not found for smoke test"
+          exit 1
+        }
+        $proc = Start-Process -FilePath $exe -ArgumentList "--version" -NoNewWindow -Wait -PassThru
         Write-Host "Exit code: $($proc.ExitCode)"
+        if ($proc.ExitCode -ne 0) {
+          Write-Error "Smoke test failed: --version returned exit code $($proc.ExitCode)"
+          exit 1
+        }
+        $proc2 = Start-Process -FilePath $exe -ArgumentList "--help" -NoNewWindow -Wait -PassThru
+        Write-Host "Help exit code: $($proc2.ExitCode)"
+        if ($proc2.ExitCode -ne 0) {
+          Write-Error "Smoke test failed: --help returned exit code $($proc2.ExitCode)"
+          exit 1
+        }
     
     - name: Create distribution ZIP
       shell: pwsh

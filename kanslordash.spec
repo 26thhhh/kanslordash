@@ -9,7 +9,7 @@ block_cipher = None
 project_root = Path(SPECPATH)
 
 a = Analysis(
-    ['kanslordash/__main__.py'],
+    ['windows_entry.py'],
     pathex=[str(project_root)],
     binaries=[],
     datas=[
