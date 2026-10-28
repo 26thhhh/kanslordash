@@ -75,9 +75,22 @@ jobs:
     - name: Generate checksum
       shell: pwsh
       run: |
-        $hash = Get-FileHash -Algorithm SHA256 "KANSLORDASH-v1.0.0-windows-x64.zip"
-        $hash.Hash + "  KANSLORDASH-v1.0.0-windows-x64.zip" | Out-File -Encoding ASCII "KANSLORDASH-v1.0.0-windows-x64.zip.sha256"
-        Get-Content "KANSLORDASH-v1.0.0-windows-x64.zip.sha256"
+        $zip = "KANSLORDASH-v1.0.0-windows-x64.zip"
+        $hash = Get-FileHash -Algorithm SHA256 $zip
+        $hash.Hash + "  " + $zip | Out-File -Encoding ASCII "$zip.sha256"
+        Get-Content "$zip.sha256"
+
+    - name: Verify checksum
+      shell: pwsh
+      run: |
+        $zip = "KANSLORDASH-v1.0.0-windows-x64.zip"
+        $expected = (Get-Content "$zip.sha256" -Raw).Trim()
+        $actual = (Get-FileHash -Algorithm SHA256 $zip).Hash + "  " + $zip
+        if ($expected -ne $actual) {
+          Write-Error "Checksum verification failed"
+          exit 1
+        }
+        Write-Host "Checksum verified successfully"
     
     - name: Upload artifact
       uses: actions/upload-artifact@v4

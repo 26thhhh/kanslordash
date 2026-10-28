@@ -48,3 +48,11 @@ If your antivirus flags KANSLORDASH, please:
 2. Check the SHA-256 checksum against published values
 3. Report false positives to your AV vendor
 4. Open an issue on GitHub with details if you believe it's a true positive
+
+## Free Code Signing (Research)
+
+**SignPath Foundation** (https://about.signpath.io/) offers free code signing for open-source projects:
+- **Eligibility:** Open-source projects with OSI-approved licenses, publicly available on GitHub/GitLab, no commercial funding
+- **Process:** Apply at https://about.signpath.io/product/open-source (review required)
+- **Notes:** Provides valid Authenticode signatures to reduce SmartScreen warnings; no cost for eligible OSS projects
+- **Status:** Not applied (optional future improvement)

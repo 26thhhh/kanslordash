@@ -222,3 +222,13 @@ KANSLORDASH is open-source and auditable. Some antivirus engines may flag PyInst
 - Code signing is planned if resources become available, but is not required for the software to function safely
 
 The application has no telemetry, no network calls to external services, and only connects to SSH hosts you explicitly configure.
+
+### Verify download integrity (PowerShell)
+After downloading the ZIP, verify its SHA-256 checksum:
+
+```powershell
+$zip = "KANSLORDASH-v1.0.0-windows-x64.zip"
+$expected = (Get-Content "$zip.sha256").Split(" ")[0]
+$actual = (Get-FileHash -Algorithm SHA256 $zip).Hash
+if ($actual -eq $expected) { Write-Host "Checksum OK" } else { Write-Host "Checksum MISMATCH" }
+```
