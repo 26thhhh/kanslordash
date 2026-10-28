@@ -1,0 +1,126 @@
+Screen {
+    background: #020b13;
+    color: #d7f5ff;
+}
+
+#frame {
+    height: 1fr;
+}
+
+#banner {
+    color: #00bfff;
+    text-style: bold;
+    padding: 1 2 0 2;
+}
+
+#subtitle {
+    color: #79a9bd;
+    padding: 0 2 1 2;
+}
+
+#servers {
+    height: 1fr;
+    margin: 0 1;
+    border: round #174a62;
+    background: #03131f;
+}
+
+DataTable > .datatable--header {
+    background: #063659;
+    color: #d7f5ff;
+    text-style: bold;
+}
+
+DataTable > .datatable--cursor {
+    background: #00bfff;
+    color: #020b13;
+}
+
+#summary {
+    height: auto;
+    min-height: 5;
+    margin: 1;
+    padding: 1 2;
+    border: round #174a62;
+    background: #03131f;
+}
+
+Footer {
+    background: #03131f;
+    color: #79a9bd;
+}
+
+ModalScreen {
+    align: center middle;
+    background: #020b13 85%;
+}
+
+#form {
+    width: 60;
+    height: auto;
+    max-height: 100%;
+    padding: 0 1;
+    background: #03131f;
+    border: thick #00bfff;
+}
+
+#confirm {
+    width: 70;
+    height: auto;
+    padding: 1 2;
+    background: #03131f;
+    border: thick #ff7185;
+}
+
+#detail,
+#network {
+    width: 90%;
+    height: 88%;
+    padding: 1 2;
+    background: #03131f;
+    border: thick #00bfff;
+}
+
+#network-table {
+    height: 1fr;
+    border: round #174a62;
+}
+
+.form-title {
+    color: #00bfff;
+    text-style: bold;
+    padding-bottom: 1;
+}
+
+.form-hint {
+    color: #79a9bd;
+    padding-top: 1;
+}
+
+.field {
+    width: 1fr;
+}
+
+.row {
+    height: auto;
+}
+
+.buttons {
+    height: auto;
+    padding-top: 1;
+}
+
+.buttons Button {
+    margin-right: 1;
+}
+
+Input,
+Select {
+    background: #061c2b;
+    border: tall #316579;
+}
+
+Input:focus,
+Select:focus {
+    border: tall #00bfff;
+}

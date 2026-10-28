@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kanslordash"
+version = "1.0.0"
+description = "Lightweight cross-platform CLI/TUI fleet and network health dashboard"
+requires-python = ">=3.11"
+dependencies = [
+    "platformdirs>=4.3",
+    "rich>=14.0",
+    "textual>=8.0,<9.0",
+]
+
+[project.scripts]
+kanslordash = "kanslordash.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=1.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["kanslordash"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-q"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"

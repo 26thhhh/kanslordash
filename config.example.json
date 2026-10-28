@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "servers": [
+    {
+      "id": "example001",
+      "name": "web-prod-01",
+      "host": "203.0.113.10",
+      "os": "linux",
+      "username": "monitor",
+      "port": 22,
+      "tags": ["prod", "web"],
+      "enabled": true,
+      "created_at": 1700000000.0
+    },
+    {
+      "id": "example002",
+      "name": "db-prod-01",
+      "host": "203.0.113.20",
+      "os": "linux",
+      "username": "monitor",
+      "port": 22,
+      "tags": ["prod", "db"],
+      "enabled": true,
+      "created_at": 1700000001.0
+    },
+    {
+      "id": "example003",
+      "name": "win-server-01",
+      "host": "203.0.113.30",
+      "os": "windows",
+      "username": "monitor",
+      "port": 22,
+      "tags": ["prod", "windows"],
+      "enabled": true,
+      "created_at": 1700000002.0
+    }
+  ]
+}
