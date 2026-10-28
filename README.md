@@ -43,7 +43,7 @@ The codebase is organized into `models`, `registry`, `config`, `nodes/` (OS abst
 
 ```bash
 # Clone the repository
-git clone https://github.com/<your-username>/kanslordash.git
+git clone https://github.com/26thhhh/kanslordash.git
 cd kanslordash
 
 # Create and activate virtual environment
