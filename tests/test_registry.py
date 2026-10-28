@@ -1,5 +1,7 @@
 import json
+import os
 import stat
+import sys
 
 import pytest
 
@@ -25,7 +27,12 @@ def test_add_persists_and_sets_private_permissions(registry):
     payload = json.loads(registry.path.read_text())
     assert payload["version"] == 1
     assert payload["servers"][0]["name"] == "LAS1"
-    assert stat.S_IMODE(registry.path.stat().st_mode) == 0o600
+    if os.name == "nt" or sys.platform == "win32":
+        # Windows does not enforce POSIX permission bits in the same way.
+        # Verify the registry file was written successfully via atomic replace.
+        assert registry.path.is_file()
+    else:
+        assert stat.S_IMODE(registry.path.stat().st_mode) == 0o600
 
 
 def test_add_rejects_duplicate_name_and_address(registry):
