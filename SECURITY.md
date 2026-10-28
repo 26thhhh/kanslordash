@@ -40,3 +40,11 @@ If you discover a security vulnerability, please report it responsibly:
 - The security model depends on the security of your SSH client, agent, and configuration
 - Network connectivity is required for monitoring
 - Some features depend on platform capabilities and permissions
+
+## False Positive Reporting
+
+If your antivirus flags KANSLORDASH, please:
+1. Verify you downloaded from the official GitHub releases page
+2. Check the SHA-256 checksum against published values
+3. Report false positives to your AV vendor
+4. Open an issue on GitHub with details if you believe it's a true positive

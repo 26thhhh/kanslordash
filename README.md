@@ -206,3 +206,19 @@ When first launching an unsigned executable downloaded from the internet, Window
 
 ### Developer installation
 If you want to run from source on Windows, see the Installation section above. The source version works on Windows, Linux, and macOS.
+
+## Antivirus & Windows SmartScreen Notes
+
+KANSLORDASH is open-source and auditable. Some antivirus engines may flag PyInstaller-packaged Python applications as false positives due to heuristic detection.
+
+- **Microsoft Defender:** Generally does not flag KANSLORDASH
+- **SmartScreen:** May show "Unknown Publisher" since the executable is not code-signed (code signing requires a paid certificate)
+- **VirusTotal:** Heuristic detections are possible on packed executables
+
+**Recommendations:**
+- Download only from the official [GitHub repository](https://github.com/26thhhh/kanslordash)
+- Verify the SHA-256 checksum of downloaded files
+- Review the source code yourself — it's fully open source
+- Code signing is planned if resources become available, but is not required for the software to function safely
+
+The application has no telemetry, no network calls to external services, and only connects to SSH hosts you explicitly configure.
