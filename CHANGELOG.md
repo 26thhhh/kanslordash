@@ -28,3 +28,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Safe subprocess execution without shell interpolation
 - Input validation to prevent injection
 - Restricted registry file permissions
+
+## [1.0.0-windows] - 2026-10-28
+
+### Added
+- Windows standalone executable packaging via PyInstaller (onedir)
+- GitHub Actions workflow for automated Windows builds (`windows-release.yml`)
+- `KANSLORDASH.exe` for double-click launch on Windows 10/11
+- Windows download and run instructions in README
+- PyInstaller spec file for reproducible builds

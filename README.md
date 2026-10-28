@@ -169,3 +169,40 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. All contributions must ma
 ## License
 
 MIT License — see [LICENSE](LICENSE) for details.
+
+## Windows — Download and Run
+
+**Recommended for most Windows users (no Python required):**
+
+1. Go to the [GitHub Releases](https://github.com/26thhhh/kanslordash/releases) page.
+2. Download `KANSLORDASH-v1.0.0-windows-x64.zip`.
+3. Extract all files to a folder (e.g., `C:\Tools\KANSLORDASH\` or Desktop).
+4. Double-click `KANSLORDASH.exe` to launch the dashboard.
+5. Press `A` to add your first server and start monitoring.
+
+### Requirements
+- Windows 10 or Windows 11 (x64)
+- [OpenSSH Client](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse) installed (available in modern Windows; can be enabled via Settings/Optional Features)
+- SSH access to the hosts you want to monitor
+- Network connectivity to those hosts
+
+### SSH Authentication
+KANSLORDASH uses your system OpenSSH client. No passwords or keys are stored in the app:
+- Use SSH keys with your SSH agent (`ssh-add`) or `~/.ssh/config`
+- When launching SSH from the app (`S` key), you'll be prompted in the terminal as normal
+- The app uses `ssh -o BatchMode=yes` for read-only monitoring probes
+
+### Where is configuration stored?
+User settings and the server registry are stored in your Windows user config directory (e.g., `%LOCALAPPDATA%\kanslordash\`), not in the extracted ZIP folder. Your configuration persists across updates/extractions.
+
+### Windows SmartScreen warning
+When first launching an unsigned executable downloaded from the internet, Windows may show a SmartScreen warning. This is normal for unsigned apps. You can click "More info" → "Run anyway" if you trust the source. **Do not disable Windows security features.**
+
+### Troubleshooting (Windows)
+- **App closes immediately**: Run from Command Prompt/Terminal to see any error messages
+- **SSH not found**: Install OpenSSH Client via Windows Optional Features
+- **Permission denied**: Ensure your SSH key is loaded or use key-based auth
+- **Terminal display issues**: Use Windows Terminal for best Unicode/colors support (falls back to cmd/conhost)
+
+### Developer installation
+If you want to run from source on Windows, see the Installation section above. The source version works on Windows, Linux, and macOS.
