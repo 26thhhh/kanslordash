@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "kanslordash"
-version = "1.0.0"
+version = "1.0.2"
 description = "Lightweight cross-platform CLI/TUI fleet and network health dashboard"
 requires-python = ">=3.11"
 dependencies = [
