@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from textual.app import ComposeResult
 from textual.binding import Binding
+import os
+
 from textual.containers import Horizontal, Vertical
 from textual.screen import ModalScreen
 from textual.widgets import Button, Checkbox, Input, Label, Select, Static
@@ -22,6 +24,10 @@ class AddServerScreen(ModalScreen[Server | None]):
     def compose(self) -> ComposeResult:
         server = self.existing
         title = "EDIT SERVER" if server else "ADD SERVER"
+        if os.name == "nt":
+            key_placeholder = r"C:\Users\username\.ssh\id_ed25519"
+        else:
+            key_placeholder = "~/.ssh/id_ed25519"
         with Vertical(id="form"):
             yield Static(title, classes="form-title")
             yield Label("Display name")
@@ -30,6 +36,8 @@ class AddServerScreen(ModalScreen[Server | None]):
             yield Input(value=server.host if server else "", placeholder="192.168.1.10", id="host")
             yield Label("SSH username (optional)")
             yield Input(value=server.username if server else "", id="username")
+            yield Label("SSH private key (optional)")
+            yield Input(value=getattr(server, "ssh_key_path", "") if server else "", placeholder=key_placeholder, id="ssh_key_path")
             yield Label("Platform")
             yield Select(
                 [(choice.capitalize(), choice) for choice in OS_CHOICES],
@@ -43,7 +51,7 @@ class AddServerScreen(ModalScreen[Server | None]):
             yield Input(value=",".join(server.tags) if server else "", id="tags")
             yield Checkbox("Enabled", value=server.enabled if server else True, id="enabled")
             yield Static(
-                "Authentication uses your normal SSH agent/config. No passwords or keys are stored.",
+                "Path to private key. Leave blank to use your normal SSH agent/config. Authentication uses your normal SSH agent/config. No passwords or keys are stored.",
                 classes="form-hint",
             )
             with Horizontal(classes="buttons"):
@@ -72,6 +80,7 @@ class AddServerScreen(ModalScreen[Server | None]):
                 "host": self.query_one("#host", Input).value,
                 "os": str(os_value),
                 "username": self.query_one("#username", Input).value,
+                "ssh_key_path": self.query_one("#ssh_key_path", Input).value,
                 "port": self.query_one("#port", Input).value or 22,
                 "tags": self.query_one("#tags", Input).value,
                 "enabled": self.query_one("#enabled", Checkbox).value,

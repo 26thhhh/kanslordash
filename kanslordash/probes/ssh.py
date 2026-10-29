@@ -31,20 +31,28 @@ def ssh_options(*, connect_timeout: float, batch: bool = True) -> list[str]:
 
 
 def build_ssh_argv(server: Server, remote_command: list[str], *, connect_timeout: float) -> list[str]:
-    return [
+    argv = [
         "ssh",
         "-T",
         "-p",
         str(server.port),
         *ssh_options(connect_timeout=connect_timeout, batch=True),
-        server.ssh_target,
-        *remote_command,
     ]
+    key_path = getattr(server, "ssh_key_path", "") or ""
+    if key_path:
+        argv += ["-i", key_path]
+    argv += [server.ssh_target, *remote_command]
+    return argv
 
 
 def build_interactive_ssh_argv(server: Server) -> list[str]:
     """Build a plain interactive SSH command; authentication follows the user's normal setup."""
-    return ["ssh", "-p", str(server.port), server.ssh_target]
+    argv = ["ssh", "-p", str(server.port)]
+    key_path = getattr(server, "ssh_key_path", "") or ""
+    if key_path:
+        argv += ["-i", key_path]
+    argv += [server.ssh_target]
+    return argv
 
 
 async def run_ssh_script(
