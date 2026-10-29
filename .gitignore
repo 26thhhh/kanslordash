@@ -74,3 +74,11 @@ id_ecdsa*
 .kanslordash/
 logs/
 cache/
+BUILD_INFO
+dist/
+build/
+*.spec.bak
+*.exe
+*.zip
+*.sha256
+

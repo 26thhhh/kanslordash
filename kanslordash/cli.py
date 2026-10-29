@@ -22,7 +22,15 @@ def build_parser() -> argparse.ArgumentParser:
         prog="kanslordash",
         description="Read-only fleet and network health dashboard.",
     )
-    parser.add_argument("--version", action="version", version=f"KanslorDash {__version__}")
+    try:
+        from . import __build_commit__
+
+        if __build_commit__:
+            parser.add_argument("--version", action="version", version=f"KanslorDash {__version__} ({__build_commit__})")
+        else:
+            parser.add_argument("--version", action="version", version=f"KanslorDash {__version__}")
+    except Exception:
+        parser.add_argument("--version", action="version", version=f"KanslorDash {__version__}")
     parser.add_argument("--registry", type=Path, default=None, help="Override the server registry path.")
     parser.add_argument("--refresh", type=int, default=None, help="Dashboard refresh interval in seconds.")
     subparsers = parser.add_subparsers(dest="command")

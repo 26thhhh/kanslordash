@@ -8,13 +8,27 @@ block_cipher = None
 # Get the project root
 project_root = Path(SPECPATH)
 
+import subprocess
+try:
+    build_commit = subprocess.check_output(['git', '-C', str(project_root), 'rev-parse', '--short', 'HEAD']).decode().strip()
+    (project_root / 'BUILD_INFO').write_text(build_commit)
+except Exception:
+    build_commit = ''
+    if (project_root / 'BUILD_INFO').exists():
+        build_commit = (project_root / 'BUILD_INFO').read_text().strip()
+
+datas_list = [
+    (str(project_root / 'kanslordash' / 'ui' / 'app.tcss'), 'kanslordash/ui'),
+]
+if build_commit:
+    (project_root / 'BUILD_INFO').write_text(build_commit)
+    datas_list.append((str(project_root / 'BUILD_INFO'), '.'))
+
 a = Analysis(
     ['windows_entry.py'],
     pathex=[str(project_root)],
     binaries=[],
-    datas=[
-        (str(project_root / 'kanslordash' / 'ui' / 'app.tcss'), 'kanslordash/ui'),
-    ],
+    datas=datas_list,
     hiddenimports=[
         'textual',
         'rich',
