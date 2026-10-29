@@ -6,6 +6,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: read
+
 jobs:
   build-windows:
     runs-on: windows-latest
@@ -27,7 +30,7 @@ jobs:
     - name: Install dependencies
       run: uv sync --locked --group dev
     
-    - name: Install PyInstaller
+    - name: Install packaging tools
       run: uv pip install pyinstaller
     
     - name: Run tests
@@ -67,36 +70,61 @@ jobs:
           exit 1
         }
     
-    - name: Create distribution ZIP
+    - name: Create portable ZIP
       shell: pwsh
       run: |
         Compress-Archive -Path "dist/KANSLORDASH/*" -DestinationPath "KANSLORDASH-v1.0.0-windows-x64.zip" -Force
     
-    - name: Generate checksum
+    - name: Install Inno Setup
       shell: pwsh
       run: |
-        $zip = "KANSLORDASH-v1.0.0-windows-x64.zip"
-        $hash = Get-FileHash -Algorithm SHA256 $zip
-        $hash.Hash + "  " + $zip | Out-File -Encoding ASCII "$zip.sha256"
-        Get-Content "$zip.sha256"
-
-    - name: Verify checksum
+        choco install innosetup --yes --no-progress
+    
+    - name: Build installer
       shell: pwsh
       run: |
-        $zip = "KANSLORDASH-v1.0.0-windows-x64.zip"
-        $expected = (Get-Content "$zip.sha256" -Raw).Trim()
-        $actual = (Get-FileHash -Algorithm SHA256 $zip).Hash + "  " + $zip
-        if ($expected -ne $actual) {
-          Write-Error "Checksum verification failed"
+        $iscc = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+        if (-not (Test-Path $iscc)) { $iscc = "C:\Program Files\Inno Setup 6\ISCC.exe" }
+        & $iscc "installer\kanslordash.iss"
+    
+    - name: Verify installer
+      shell: pwsh
+      run: |
+        if (-not (Test-Path "dist/installer/KANSLORDASH-Setup-x64.exe")) {
+          Write-Error "Installer not found"
           exit 1
         }
-        Write-Host "Checksum verified successfully"
+        Write-Host "Installer created"
+        Get-Item "dist/installer/KANSLORDASH-Setup-x64.exe" | Select-Object Name, Length
     
-    - name: Upload artifact
+    - name: Generate checksums
+      shell: pwsh
+      run: |
+        $files = @("KANSLORDASH-v1.0.0-windows-x64.zip", "dist/installer/KANSLORDASH-Setup-x64.exe")
+        foreach ($f in $files) {
+          $hash = Get-FileHash -Algorithm SHA256 $f
+          $hash.Hash + "  " + (Split-Path $f -Leaf) | Out-File -Encoding ASCII "$f.sha256"
+          Get-Content "$f.sha256"
+        }
+    
+    - name: Verify checksums
+      shell: pwsh
+      run: |
+        $files = @("KANSLORDASH-v1.0.0-windows-x64.zip", "dist/installer/KANSLORDASH-Setup-x64.exe")
+        foreach ($f in $files) {
+          $expected = (Get-Content "$f.sha256" -Raw).Trim()
+          $actual = (Get-FileHash -Algorithm SHA256 $f).Hash + "  " + (Split-Path $f -Leaf)
+          if ($expected -ne $actual) { Write-Error "Checksum verification failed for $f"; exit 1 }
+        }
+        Write-Host "All checksums verified"
+    
+    - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: KANSLORDASH-v1.0.0-windows-x64
         path: |
           KANSLORDASH-v1.0.0-windows-x64.zip
           KANSLORDASH-v1.0.0-windows-x64.zip.sha256
+          dist/installer/KANSLORDASH-Setup-x64.exe
+          dist/installer/KANSLORDASH-Setup-x64.exe.sha256
         if-no-files-found: error

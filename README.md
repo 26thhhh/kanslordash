@@ -232,3 +232,36 @@ $expected = (Get-Content "$zip.sha256").Split(" ")[0]
 $actual = (Get-FileHash -Algorithm SHA256 $zip).Hash
 if ($actual -eq $expected) { Write-Host "Checksum OK" } else { Write-Host "Checksum MISMATCH" }
 ```
+
+## Download (Windows)
+
+**Recommended:** Download the installer from the [latest release](https://github.com/26thhhh/kanslordash/releases/latest).
+
+- **[KANSLORDASH-Setup-x64.exe](https://github.com/26thhhh/kanslordash/releases/latest/download/KANSLORDASH-Setup-x64.exe)** — Windows 10/11 x64 installer (per-user, no admin required). Creates Start Menu shortcut and optional Desktop shortcut.
+- **[KANSLORDASH-v1.0.0-windows-x64.zip](https://github.com/26thhhh/kanslordash/releases/latest/download/KANSLORDASH-v1.0.0-windows-x64.zip)** — Portable alternative (extract and run `KANSLORDASH.exe` directly).
+
+### Installation
+1. Download `KANSLORDASH-Setup-x64.exe` from the latest release
+2. Run the installer (unsigned — Windows SmartScreen may show a warning; click "More info" → "Run anyway" if trusted)
+3. Choose install location (defaults to user app directory)
+4. Launch from Start Menu or optionally from installer checkbox
+5. Add servers with `A` key and start monitoring
+
+### Portable
+1. Download and extract the ZIP
+2. Double-click `KANSLORDASH.exe` in the extracted folder
+3. Configuration is stored in `%LOCALAPPDATA%\kanslordash\`
+
+### Uninstall
+Use Windows Settings → Apps or Control Panel. Your configuration in `%LOCALAPPDATA%\kanslordash\` is preserved during uninstall.
+
+### Checksum verification
+Download both the file and its `.sha256` sidecar, then verify in PowerShell:
+```powershell
+$zip = "KANSLORDASH-Setup-x64.exe"
+$expected = (Get-Content "$zip.sha256").Split(" ")[0]
+$actual = (Get-FileHash -Algorithm SHA256 $zip).Hash
+if ($actual -eq $expected) { "OK" } else { "MISMATCH" }
+```
+
+*Note:* The download links above become functional after the first release is published. The installer is unsigned and may trigger SmartScreen warnings — this is expected and does not mean the software is malicious. Do not disable antivirus or Windows security protections.
